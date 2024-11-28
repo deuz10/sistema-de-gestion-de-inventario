@@ -1,0 +1,25 @@
+language: node_js
+node_js:
+  - "14"
+  - "16"
+  - "18"
+
+services:
+  - mongodb
+
+cache:
+  directories:
+    - node_modules
+
+before_script:
+  - cp .env.example .env
+  - sleep 15
+  - mongo boutique --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
+
+script:
+  - npm test
+
+notifications:
+  email:
+    on_success: never
+    on_failure: always
